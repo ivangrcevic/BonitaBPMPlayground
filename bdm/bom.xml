@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<businessObjectModel modelVersion="1.0" productVersion="7.4.1">
+    <businessObjects>
+        <businessObject qualifiedName="com.company.model.TipoDePractica">
+            <description>Tipo de práctica</description>
+            <fields>
+                <field type="STRING" length="255" name="nombre" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="descripcion" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.Asegurado">
+            <fields>
+                <field type="STRING" length="255" name="nombre" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="apellido" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="documento" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="telefono" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="domicilio" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints>
+                <uniqueConstraint name="documento_paciente">
+                    <fieldNames>
+                        <fieldName>documento</fieldName>
+                    </fieldNames>
+                </uniqueConstraint>
+            </uniqueConstraints>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.PlanCobertura">
+            <fields>
+                <field type="STRING" length="255" name="nombre" nullable="false" collection="false"/>
+                <field type="TEXT" length="255" name="descripcion" nullable="false" collection="false"/>
+                <field type="INTEGER" length="255" name="presupuesto" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.Solicitud">
+            <fields>
+                <field type="DATE" length="255" name="fecha" nullable="false" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.company.model.Caso" fetchType="EAGER" name="caso" nullable="false" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.company.model.Prestador" fetchType="EAGER" name="prestador" nullable="false" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.company.model.TipoDePractica" fetchType="EAGER" name="practica" nullable="false" collection="false"/>
+                <field type="TEXT" length="255" name="detalles" nullable="false" collection="false"/>
+                <field type="INTEGER" length="255" name="costo" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="estado" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.Prestador">
+            <fields>
+                <field type="STRING" length="255" name="nombre" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="direccion" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="telefono" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="pais" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="departamento" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="ciudad" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.Cobertura">
+            <fields>
+                <field type="DATE" length="255" name="fechaVigenciaDesde" nullable="false" collection="false"/>
+                <field type="DATE" length="255" name="fechaVigenciaHasta" nullable="false" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.company.model.PlanCobertura" fetchType="EAGER" name="planCobertura" nullable="false" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.company.model.Asegurado" fetchType="EAGER" name="asegurado" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="numeroVoucher" nullable="false" collection="false"/>
+                <field type="INTEGER" length="255" name="presupuestoDisponible" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.Caso">
+            <fields>
+                <relationField type="AGGREGATION" reference="com.company.model.Cobertura" fetchType="EAGER" name="cobertura" nullable="false" collection="false"/>
+                <field type="STRING" length="255" name="fecha" nullable="false" collection="false"/>
+                <relationField type="COMPOSITION" reference="com.company.model.Registro" fetchType="EAGER" name="registros" nullable="true" collection="true"/>
+                <field type="STRING" length="255" name="estado" nullable="false" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+        <businessObject qualifiedName="com.company.model.Registro">
+            <fields>
+                <field type="DATE" length="255" name="fecha" nullable="false" collection="false"/>
+                <field type="TEXT" length="255" name="detalles" nullable="false" collection="false"/>
+                <relationField type="AGGREGATION" reference="com.company.model.Prestador" fetchType="EAGER" name="prestador" nullable="true" collection="false"/>
+            </fields>
+            <uniqueConstraints/>
+            <queries/>
+            <indexes/>
+        </businessObject>
+    </businessObjects>
+</businessObjectModel>

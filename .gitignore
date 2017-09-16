@@ -1,0 +1,7 @@
+application_resources/
+.settings/
+.classpath
+.project
+META-INF/
+build.properties
+h2_database/
