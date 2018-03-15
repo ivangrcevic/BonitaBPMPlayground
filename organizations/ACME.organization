@@ -554,8 +554,8 @@
   </roles>
   <groups>
     <group name="globecare">
-      <displayName>Acme</displayName>
-      <description>This group represents the acme department of the ACME organization</description>
+      <displayName>GlobeCare</displayName>
+      <description>Este grupo representa el departamento de GlobeCare de la organización GlobeCare</description>
     </group>
     <group name="hr" parentPath="/globecare">
       <displayName>Recursos Humanos</displayName>
@@ -574,7 +574,7 @@
       <description>Este grupo representa el departamento de marketing de la organización. </description>
     </group>
     <group name="production" parentPath="/globecare">
-      <displayName>Production</displayName>
+      <displayName>Producción</displayName>
       <description>Este grupo representa el área de producción de la organización. </description>
     </group>
     <group name="services" parentPath="/globecare">
@@ -583,7 +583,7 @@
     </group>
     <group name="agents" parentPath="/globecare/services">
       <displayName>Agentes</displayName>
-      <description>Este grupo atiende los llamados. </description>
+      <description>Este grupo atiende los llamados de los clientes. </description>
     </group>
     <group name="coordinators" parentPath="/globecare/services">
       <displayName>Coordinadores de asistencia</displayName>

@@ -73,13 +73,16 @@ function digitalSignatureController($scope, $element, $q) {
             $scope.file = changeEvent.target.files[0];
         });
     };
-    
+
     $scope.sign = function (){
         promptForPassword().then(function (password){
             doLoadPrivateKeyFromPEM($scope.file, password).then(function (privateKey){
                 if(privateKey){
-                    var textToSign = JSON.stringify($scope.properties.formOutput)
-                    $scope.value = doSign(privateKey, textToSign);    
+                    var textToSign = JSON.stringify($scope.properties.formOutput);
+                    var signatureString = btoa(doSign(privateKey, textToSign));
+                    console.log(textToSign);
+                    console.log(signatureString);
+                    $scope.properties.value = signatureString;
                 } else {
                     alert("Invalid password");
                 }
@@ -91,6 +94,6 @@ function digitalSignatureController($scope, $element, $q) {
  
  
 },
-      template: '<!-- The custom widget template is defined here\n   - You can use standard HTML tags and AngularJS built-in directives, scope and interpolation system\n   - Custom widget properties defined on the right can be used as variables in a templates with properties.newProperty\n   - Functions exposed in the controller can be used with ctrl.newFunction()\n   - You can use the \'environment\' property injected in the scope when inside the Editor whiteboard. It allows to define a mockup\n     of the Custom Widget to be displayed in the whiteboard only. By default the widget is represented by an auto-generated icon\n     and its name (See the <span> below).\n-->\n\n    <div class="digital-signature-uic">\n        <span ng-if="environment"><identicon name="{{environment.component.id}}" size="30" background-color="[255,255,255, 0]" foreground-color="[51,51,51]"></identicon> {{environment.component.name}}</span>\n        <p>{{properties.value}}</p>\n        <p>{{properties.formOutput}}</p>\n        <p><label for="file">{{texts[\'label.text\']}}</label></p>\n        <input type="file" class="file-loader" name="file" > \n        <button type="button" class="sign-button" ng-click="sign()" ng-hide="!file"> \n           {{texts[\'signButton.text\']}} \n        </button>\n    </div>\n\n<!-- \n    \n    \n    <div style="color: {{ properties.color }}; background-color: {{ backgroudColor }}" ng-click="ctrl.toggleBackgroundColor()">\n        Value is:  <i>{{ properties.value }}</i>. Click me to toggle background color\n    </div>\n-->'
+      template: '<!-- The custom widget template is defined here\n   - You can use standard HTML tags and AngularJS built-in directives, scope and interpolation system\n   - Custom widget properties defined on the right can be used as variables in a templates with properties.newProperty\n   - Functions exposed in the controller can be used with ctrl.newFunction()\n   - You can use the \'environment\' property injected in the scope when inside the Editor whiteboard. It allows to define a mockup\n     of the Custom Widget to be displayed in the whiteboard only. By default the widget is represented by an auto-generated icon\n     and its name (See the <span> below).\n-->\n\n    <div class="digital-signature-uic">\n        <span ng-if="environment"><identicon name="{{environment.component.id}}" size="30" background-color="[255,255,255, 0]" foreground-color="[51,51,51]"></identicon> {{environment.component.name}}</span>\n        <p><label for="file">{{texts[\'label.text\']}}</label></p>\n        <input type="file" class="file-loader" name="file" > \n        <button type="button" class="sign-button" ng-click="sign()" ng-hide="!file"> \n           {{texts[\'signButton.text\']}} \n        </button>\n    </div>\n\n<!-- \n    \n    \n    <div style="color: {{ properties.color }}; background-color: {{ backgroudColor }}" ng-click="ctrl.toggleBackgroundColor()">\n        Value is:  <i>{{ properties.value }}</i>. Click me to toggle background color\n    </div>\n-->'
     };
   });
