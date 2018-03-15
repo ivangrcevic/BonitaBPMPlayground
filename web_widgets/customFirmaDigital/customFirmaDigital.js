@@ -78,10 +78,12 @@ function digitalSignatureController($scope, $element, $q) {
         promptForPassword().then(function (password){
             doLoadPrivateKeyFromPEM($scope.file, password).then(function (privateKey){
                 if(privateKey){
-                    var textToSign = JSON.stringify($scope.properties.formOutput);
+                    var jsonData = JSON.stringify($scope.properties.formOutput);
+                    var textToSign = btoa(unescape(encodeURIComponent(jsonData)));
                     var signatureString = btoa(doSign(privateKey, textToSign));
-                    console.log(textToSign);
-                    console.log(signatureString);
+                    console.log("json Data " + jsonData);
+                    console.log("textToSign " + textToSign);
+                    console.log("signature " + signatureString);
                     $scope.properties.value = signatureString;
                 } else {
                     alert("Invalid password");
