@@ -356,7 +356,7 @@
             <inputs xmi:type="process:ContractInput" xmi:id="_0h2LYLy6EeeuXb2iKuhWOA" name="username">
               <mapping xmi:type="process:ContractInputMapping" xmi:id="_0h2ycLy6EeeuXb2iKuhWOA"/>
             </inputs>
-            <constraints xmi:type="process:ContractConstraint" xmi:id="_1iBR4JsvEeeZB-DIHFnzyw" expression="import org.bouncycastle.jce.provider.BouncyCastleProvider;&#xA;import org.bouncycastle.util.encoders.Base64;&#xA;import org.unlp.info.ivangrcevic.digitalSignature.verifier.Verifier;&#xA;import java.security.PublicKey;&#xA;import java.security.Security;&#xA;import java.util.logging.Logger;&#xA;import com.google.gson.Gson;&#xA;&#xA;Logger logger = Logger.getLogger(&quot;org.bonitasoft&quot;);&#xA;&#xA;Security.addProvider(new BouncyCastleProvider());&#xA;&#xA;try {&#xA;&#x9;PublicKey publicKey = Verifier.loadPublicKey(&quot;/Users/ivangrcevic/workspace/BPM-Crypto-integration/generatedKeys/&quot; + username + &quot;.pem&quot;);&#xA;&#x9;byte[] signature = Base64.decode(firma);&#xA;&#x9;Gson gson = new Gson();&#xA;&#x9;String jsonString = gson.toJson(datos);&#xA;&#x9;String toVerify = jsonString.getBytes(&quot;UTF-8&quot;).encodeBase64().toString();&#xA;&#x9;logger.info(&quot;estado: &quot;+ datos.estado);&#xA;&#x9;logger.info(&quot;JSON String (Bonita): &quot;+ jsonString);&#xA;&#x9;logger.info(&quot;To verify: &quot;+ toVerify);&#xA;&#x9;logger.info(&quot;Firma: &quot; + firma);&#xA;&#x9;&#xA;&#x9;boolean result = Verifier.verify(publicKey, signature, toVerify);&#xA;} catch (FileNotFoundException e) {&#xA;&#x9;logger.info(&quot;Archivo de clave pública no encontrado para usuario &quot;+ username)&#x9;&#xA;} catch (IOException e) {&#xA;&#x9;logger.error(&quot;Error al intentar acceder al archivo de clave pública del usuario &quot;+ username)&#xA;}&#xA;&#x9;&#xA;return result" errorMessage="La firma no es válida. " name="comprobarFirma">
+            <constraints xmi:type="process:ContractConstraint" xmi:id="_1iBR4JsvEeeZB-DIHFnzyw" expression="import org.bouncycastle.jce.provider.BouncyCastleProvider;&#xA;import org.bouncycastle.util.encoders.Base64;&#xA;import org.unlp.info.ivangrcevic.digitalSignature.verifier.Verifier;&#xA;import java.security.PublicKey;&#xA;import java.security.Security;&#xA;import java.util.logging.Logger;&#xA;import com.google.gson.Gson;&#xA;&#xA;Logger logger = Logger.getLogger(&quot;org.bonitasoft&quot;);&#xA;&#xA;Security.addProvider(new BouncyCastleProvider());&#xA;&#xA;try {&#xA;&#x9;PublicKey publicKey = Verifier.loadPublicKey(&quot;/Users/ivangrcevic/workspace/BPM-Crypto-integration/generatedKeys/&quot; + username + &quot;.pem&quot;);&#xA;&#x9;byte[] signature = Base64.decode(firma);&#xA;&#x9;Gson gson = new Gson();&#xA;&#x9;String jsonString = gson.toJson(datos);&#xA;&#x9;String toVerify = jsonString.getBytes(&quot;UTF-8&quot;).encodeBase64().toString();&#xA;&#x9;logger.info(&quot;estado: &quot;+ datos.estado);&#xA;&#x9;logger.info(&quot;JSON String (Bonita): &quot;+ jsonString);&#xA;&#x9;logger.info(&quot;To verify: &quot;+ toVerify);&#xA;&#x9;logger.info(&quot;Firma: &quot; + firma);&#xA;&#x9;&#xA;&#x9;boolean result = Verifier.verify(publicKey, signature, toVerify);&#xA;&#x9;return result;&#xA;&#x9;&#xA;} catch (FileNotFoundException e) {&#xA;&#x9;logger.info(&quot;Archivo de clave pública no encontrado para usuario &quot;+ username)&#x9;&#xA;&#x9;return false;&#xA;} catch (IOException e) {&#xA;&#x9;logger.error(&quot;Error al intentar acceder al archivo de clave pública del usuario &quot;+ username)&#xA;&#x9;return false;&#xA;}" errorMessage="La firma no es válida. " name="comprobarFirma">
               <inputNames>datos</inputNames>
               <inputNames>firma</inputNames>
               <inputNames>username</inputNames>
@@ -495,9 +495,15 @@
             <leftOperand xmi:type="expression:Expression" xmi:id="_jPGTIZZYEeeggfgPtvrCEQ" name="solicitud" content="solicitud" type="TYPE_VARIABLE" returnType="com.company.model.Solicitud">
               <referencedElements xmi:type="process:BusinessObjectData" xmi:id="_jpfJEJZYEeeggfgPtvrCEQ" name="solicitud" dataType="_07VfB_YPEea244iW64Bb7Q" className="com.company.model.Solicitud"/>
             </leftOperand>
-            <rightOperand xmi:type="expression:Expression" xmi:id="_jPGTIpZYEeeggfgPtvrCEQ" name="estado" content="estado" type="TYPE_CONTRACT_INPUT">
-              <referencedElements xmi:type="process:ContractInput" xmi:id="_laPVAJZYEeeggfgPtvrCEQ" name="estado">
-                <mapping xmi:type="process:ContractInputMapping" xmi:id="_laPVAZZYEeeggfgPtvrCEQ"/>
+            <rightOperand xmi:type="expression:Expression" xmi:id="_jPGTIpZYEeeggfgPtvrCEQ" name="getEstado" content="return datos.get(&quot;estado&quot;)" interpreter="GROOVY" type="TYPE_READ_ONLY_SCRIPT">
+              <referencedElements xmi:type="process:ContractInput" xmi:id="_Z7bzcD3dEeidBISYv9tODA" name="datos" type="COMPLEX">
+                <mapping xmi:type="process:ContractInputMapping" xmi:id="_Z7bzcT3dEeidBISYv9tODA"/>
+                <inputs xmi:type="process:ContractInput" xmi:id="_Z7bzcj3dEeidBISYv9tODA" name="estado">
+                  <mapping xmi:type="process:ContractInputMapping" xmi:id="_Z7bzcz3dEeidBISYv9tODA"/>
+                </inputs>
+                <inputs xmi:type="process:ContractInput" xmi:id="_Z7bzdD3dEeidBISYv9tODA" name="comentarios">
+                  <mapping xmi:type="process:ContractInputMapping" xmi:id="_Z7bzdT3dEeidBISYv9tODA"/>
+                </inputs>
               </referencedElements>
             </rightOperand>
             <operator xmi:type="expression:Operator" xmi:id="_jPGTI5ZYEeeggfgPtvrCEQ" type="JAVA_METHOD" expression="setEstado">
@@ -508,11 +514,17 @@
             <leftOperand xmi:type="expression:Expression" xmi:id="_ljIyUZZYEeeggfgPtvrCEQ" name="solicitud" content="solicitud" type="TYPE_VARIABLE" returnType="com.company.model.Solicitud">
               <referencedElements xmi:type="process:BusinessObjectData" xmi:id="_mAh48JZYEeeggfgPtvrCEQ" name="solicitud" dataType="_07VfB_YPEea244iW64Bb7Q" className="com.company.model.Solicitud"/>
             </leftOperand>
-            <rightOperand xmi:type="expression:Expression" xmi:id="_ljIyUpZYEeeggfgPtvrCEQ" name="agregarComentariosADetalles" content="return solicitud.detalles + &quot; --- Comentarios de especialista: &quot;+ comentarios" interpreter="GROOVY" type="TYPE_READ_ONLY_SCRIPT">
-              <referencedElements xmi:type="process:BusinessObjectData" xmi:id="_wc0RoJZYEeeggfgPtvrCEQ" name="solicitud" dataType="_07VfB_YPEea244iW64Bb7Q" className="com.company.model.Solicitud"/>
-              <referencedElements xmi:type="process:ContractInput" xmi:id="_wc0RoZZYEeeggfgPtvrCEQ" name="comentarios">
-                <mapping xmi:type="process:ContractInputMapping" xmi:id="_wc0RopZYEeeggfgPtvrCEQ"/>
+            <rightOperand xmi:type="expression:Expression" xmi:id="_ljIyUpZYEeeggfgPtvrCEQ" name="agregarComentariosADetalles" content="return solicitud.detalles + &quot; --- Comentarios de especialista: &quot;+ datos.get(&quot;comentarios&quot;)" interpreter="GROOVY" type="TYPE_READ_ONLY_SCRIPT">
+              <referencedElements xmi:type="process:ContractInput" xmi:id="_dQXH4D3dEeidBISYv9tODA" name="datos" type="COMPLEX">
+                <mapping xmi:type="process:ContractInputMapping" xmi:id="_dQXH4T3dEeidBISYv9tODA"/>
+                <inputs xmi:type="process:ContractInput" xmi:id="_dQXH4j3dEeidBISYv9tODA" name="estado">
+                  <mapping xmi:type="process:ContractInputMapping" xmi:id="_dQXH4z3dEeidBISYv9tODA"/>
+                </inputs>
+                <inputs xmi:type="process:ContractInput" xmi:id="_dQXH5D3dEeidBISYv9tODA" name="comentarios">
+                  <mapping xmi:type="process:ContractInputMapping" xmi:id="_dQXH5T3dEeidBISYv9tODA"/>
+                </inputs>
               </referencedElements>
+              <referencedElements xmi:type="process:BusinessObjectData" xmi:id="_dQXH5j3dEeidBISYv9tODA" name="solicitud" dataType="_07VfB_YPEea244iW64Bb7Q" className="com.company.model.Solicitud"/>
             </rightOperand>
             <operator xmi:type="expression:Operator" xmi:id="_ljIyU5ZYEeeggfgPtvrCEQ" type="JAVA_METHOD" expression="setDetalles">
               <inputTypes>java.lang.String</inputTypes>
@@ -529,12 +541,26 @@
             <targetForm xmi:type="expression:Expression" xmi:id="_40EF4JZXEeeggfgPtvrCEQ" name="RevisionDeEspecialista" content="9d0cbfbb-7e0f-4850-ad94-4279e6a16a7f" type="FORM_REFERENCE_TYPE" returnTypeFixed="true"/>
           </formMapping>
           <contract xmi:type="process:Contract" xmi:id="_5gDeSwEfEeeNeftg3jiNkg">
-            <inputs xmi:type="process:ContractInput" xmi:id="_5XSiAJZHEeeggfgPtvrCEQ" name="estado">
-              <mapping xmi:type="process:ContractInputMapping" xmi:id="_5XSiAZZHEeeggfgPtvrCEQ"/>
+            <inputs xmi:type="process:ContractInput" xmi:id="_6FKlcD3cEeidBISYv9tODA" name="datos" type="COMPLEX">
+              <mapping xmi:type="process:ContractInputMapping" xmi:id="_6FKlcT3cEeidBISYv9tODA"/>
+              <inputs xmi:type="process:ContractInput" xmi:id="_D8MU8D3dEeidBISYv9tODA" name="estado">
+                <mapping xmi:type="process:ContractInputMapping" xmi:id="_D8MU8T3dEeidBISYv9tODA"/>
+              </inputs>
+              <inputs xmi:type="process:ContractInput" xmi:id="_GBWDkD3dEeidBISYv9tODA" name="comentarios">
+                <mapping xmi:type="process:ContractInputMapping" xmi:id="_GBWDkT3dEeidBISYv9tODA"/>
+              </inputs>
             </inputs>
-            <inputs xmi:type="process:ContractInput" xmi:id="_AZ3M4JZIEeeggfgPtvrCEQ" name="comentarios">
-              <mapping xmi:type="process:ContractInputMapping" xmi:id="_AZ3M4ZZIEeeggfgPtvrCEQ"/>
+            <inputs xmi:type="process:ContractInput" xmi:id="_As35QD3dEeidBISYv9tODA" name="firma">
+              <mapping xmi:type="process:ContractInputMapping" xmi:id="_As35QT3dEeidBISYv9tODA"/>
             </inputs>
+            <inputs xmi:type="process:ContractInput" xmi:id="_CGxrcD3dEeidBISYv9tODA" name="username">
+              <mapping xmi:type="process:ContractInputMapping" xmi:id="_CGxrcT3dEeidBISYv9tODA"/>
+            </inputs>
+            <constraints xmi:type="process:ContractConstraint" xmi:id="_KduvUD3dEeidBISYv9tODA" expression="import org.bouncycastle.jce.provider.BouncyCastleProvider;&#xA;import org.bouncycastle.util.encoders.Base64;&#xA;import org.unlp.info.ivangrcevic.digitalSignature.verifier.Verifier;&#xA;import java.security.PublicKey;&#xA;import java.security.Security;&#xA;import java.util.logging.Logger;&#xA;import com.google.gson.Gson;&#xA;&#xA;Logger logger = Logger.getLogger(&quot;org.bonitasoft&quot;);&#xA;&#xA;Security.addProvider(new BouncyCastleProvider());&#xA;&#xA;try {&#xA;&#x9;PublicKey publicKey = Verifier.loadPublicKey(&quot;/Users/ivangrcevic/workspace/BPM-Crypto-integration/generatedKeys/&quot; + username + &quot;.pem&quot;);&#xA;&#x9;byte[] signature = Base64.decode(firma);&#xA;&#x9;Gson gson = new Gson();&#xA;&#x9;String jsonString = gson.toJson(datos);&#xA;&#x9;String toVerify = jsonString.getBytes(&quot;UTF-8&quot;).encodeBase64().toString();&#xA;&#x9;logger.info(&quot;estado: &quot;+ datos.estado);&#xA;&#x9;logger.info(&quot;JSON String (Bonita): &quot;+ jsonString);&#xA;&#x9;logger.info(&quot;To verify: &quot;+ toVerify);&#xA;&#x9;logger.info(&quot;Firma: &quot; + firma);&#xA;&#x9;&#xA;&#x9;boolean result = Verifier.verify(publicKey, signature, toVerify);&#xA;&#x9;return result;&#xA;&#x9;&#xA;} catch (FileNotFoundException e) {&#xA;&#x9;logger.info(&quot;Archivo de clave pública no encontrado para usuario &quot;+ username)&#x9;&#xA;&#x9;return false;&#xA;} catch (IOException e) {&#xA;&#x9;logger.error(&quot;Error al intentar acceder al archivo de clave pública del usuario &quot;+ username)&#xA;&#x9;return false;&#xA;}" name="validarFirma">
+              <inputNames>datos</inputNames>
+              <inputNames>firma</inputNames>
+              <inputNames>username</inputNames>
+            </constraints>
           </contract>
           <expectedDuration xmi:type="expression:Expression" xmi:id="_5gDeTgEfEeeNeftg3jiNkg" name="" content="" returnType="java.lang.Long" returnTypeFixed="true"/>
         </elements>
