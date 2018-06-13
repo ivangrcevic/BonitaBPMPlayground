@@ -1,8 +1,12 @@
-.sign-button {
+.digital-signature-uic .sign-button {
+    display: inline-block;
     margin-left: 10px;
-    float: left;
+ }
+
+.digital-signature-uic .error-text {
+    color: red;
 }
 
-.file-loader {
-    float: left;
+.digital-signature-uic .success-text {
+    color: green;
 }
